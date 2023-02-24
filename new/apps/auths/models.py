@@ -21,6 +21,9 @@ class UserManager(BaseUserManager):
     def create_user(
         self,
         email: str,
+        first_name: str,
+        last_name: str,
+        username: str,
         password: str
     ) -> 'User':
 
@@ -31,6 +34,9 @@ class UserManager(BaseUserManager):
             email=self.normalize_email(email),
             password=password
         )
+        user.username = username
+        user.first_name = first_name
+        user.last_name = last_name
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -116,4 +122,4 @@ class User(AbstractBaseUser, PermissionsMixin):
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return self.username
+        return f'{self.first_name} {self.last_name}'

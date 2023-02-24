@@ -5,7 +5,8 @@ from django.conf import settings
 from rest_framework.routers import DefaultRouter
 
 from lessons.views import BookView
-from auths.views import UserView
+from auths.views import UserView, UserRegView, LoginView, LogoutView
+from banks.views import CardView
 
 
 urlpatterns = [
@@ -18,6 +19,10 @@ router: DefaultRouter = DefaultRouter(
 )
 router.register('books', BookView)
 router.register('users', UserView)
+router.register('cards', CardView)
+router.register('reg_user', UserRegView)
+router.register('login', LoginView)
+router.register('logout', LogoutView)
 if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include('debug_toolbar.urls')),

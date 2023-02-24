@@ -29,8 +29,8 @@ DJANGO_APPS = [
 ]
 PROJECT_APPS = [
     'auths.apps.AuthsConfig',
-    'main.apps.MainConfig',
-    'lessons.apps.LessonsConfig'
+    'lessons.apps.LessonsConfig',
+    'banks.apps.BanksConfig'
 ]
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
@@ -66,9 +66,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'settings.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -76,9 +73,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -96,12 +90,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
+LANGUAGE_CODE = 'ru'
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Almaty'
 
 USE_I18N = True
 

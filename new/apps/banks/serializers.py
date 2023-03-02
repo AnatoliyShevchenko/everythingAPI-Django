@@ -1,9 +1,10 @@
 from rest_framework import serializers
+from rest_framework.serializers import ValidationError
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractBaseUser
 
-from .models import Card
+from .models import Card, Terminal, Transaction
 
 
 User: AbstractBaseUser = get_user_model()
@@ -30,3 +31,32 @@ class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = '__all__'
+
+
+class SearchSerializer(serializers.Serializer):
+    """Seek And Destroy."""
+
+    number = serializers.CharField()
+    cvv = serializers.CharField()
+    date_expired = serializers.DateField()
+
+
+class TerminalSerializer(serializers.ModelSerializer):
+    """Serializer for terminals."""
+
+    class Meta:
+        model = Terminal
+        fields = '__all__'
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    """Serializer for transactions."""
+
+    class Meta:
+        model = Transaction
+        fields = (
+            'out_card',
+            'to_card',
+            'terminal',
+            'money',
+        )

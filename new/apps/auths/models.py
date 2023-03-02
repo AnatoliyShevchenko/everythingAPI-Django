@@ -13,11 +13,6 @@ from typing import Any
 class UserManager(BaseUserManager):
     """ClientManager."""
 
-    def get_active_users(self):
-        return self.filter(
-            is_active=True
-        )
-
     def create_user(
         self,
         email: str,
@@ -32,7 +27,7 @@ class UserManager(BaseUserManager):
 
         user: 'User' = self.model(
             email=self.normalize_email(email),
-            password=password
+            # password=password
         )
         user.username = username
         user.first_name = first_name

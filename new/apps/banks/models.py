@@ -34,6 +34,7 @@ class Card(models.Model):
     )
     user = models.ForeignKey(
         to=User,
+        to_field=id,
         on_delete=models.CASCADE
     )
 
@@ -43,7 +44,7 @@ class Card(models.Model):
         verbose_name_plural = 'карты'
 
     def __str__(self) -> str:
-        return f'{self.user}'
+        return f'{self.id}'
 
 
 class Terminal(models.Model):
@@ -51,6 +52,7 @@ class Terminal(models.Model):
 
     user = models.OneToOneField(
         to=User,
+        to_field=id,
         on_delete=models.CASCADE,
         unique=True
     )
@@ -66,7 +68,7 @@ class Terminal(models.Model):
         verbose_name_plural = 'терминалы'
 
     def __str__(self) -> str:
-        return self.address
+        return f'{self.id}'
 
 
 class Transaction(models.Model):
@@ -74,15 +76,18 @@ class Transaction(models.Model):
 
     out_card = models.ForeignKey(
         to=Card,
+        to_field=id,
         on_delete=models.CASCADE,
         related_name='откуда'
     )
     to_card = models.ForeignKey(
         to=Card,
+        to_field=id,
         on_delete=models.CASCADE,
     )
     terminal = models.ForeignKey(
         to=Terminal,
+        to_field=id,
         on_delete=models.CASCADE,
     )
     money = models.DecimalField(

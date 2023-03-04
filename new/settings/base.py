@@ -33,7 +33,8 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     'auths.apps.AuthsConfig',
     'lessons.apps.LessonsConfig',
-    'banks.apps.BanksConfig'
+    'banks.apps.BanksConfig',
+    'asyncs.apps.AsyncsConfig'
 ]
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
@@ -195,3 +196,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+LIST_API = [
+    
+]

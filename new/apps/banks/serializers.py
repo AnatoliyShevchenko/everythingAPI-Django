@@ -51,6 +51,14 @@ class TerminalSerializer(serializers.ModelSerializer):
 
 class TransactionSerializer(serializers.ModelSerializer):
     """Serializer for transactions."""
+    out_card = serializers.CharField(required=True)
+    to_card = serializers.CharField(required=False)
+    terminal = serializers.CharField(required=False)
+    money = serializers.DecimalField(
+        required=True, 
+        max_digits=10, 
+        decimal_places=2
+    )
 
     class Meta:
         model = Transaction

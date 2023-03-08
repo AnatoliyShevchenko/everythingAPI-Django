@@ -4,7 +4,12 @@ from rest_framework.serializers import ValidationError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractBaseUser
 
-from .models import Card, Terminal, Transaction
+from .models import (
+    Card, 
+    Terminal, 
+    CardToCardTransaction, 
+    CardToTerminalTransaction,
+)
 
 
 User: AbstractBaseUser = get_user_model()
@@ -49,22 +54,23 @@ class TerminalSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class TransactionSerializer(serializers.ModelSerializer):
-    """Serializer for transactions."""
-    out_card = serializers.CharField(required=True)
-    to_card = serializers.CharField(required=False)
-    terminal = serializers.CharField(required=False)
-    money = serializers.DecimalField(
-        required=True, 
-        max_digits=10, 
-        decimal_places=2
-    )
+class CardToCardSerializer(serializers.ModelSerializer):
+    """Serializer for card to card transaction."""
 
     class Meta:
-        model = Transaction
-        fields = (
-            'out_card',
-            'to_card',
-            'terminal',
-            'money',
-        )
+        model = CardToCardTransaction
+        fields = ('out_card', 'to_card', 'money',)
+
+
+class CardToTerminalSerializer(serializers.ModelSerializer):
+    """Serializer for card to terminal transaction."""
+
+    class Meta:
+        model = CardToTerminalTransaction
+        fields = ('out_card', 'terminal', 'money',)
+
+
+class MoneySerializer(serializers.Serializer):
+    """serializer for user's money."""
+
+    to_card_id = serializers.IntegerField()

@@ -10,15 +10,21 @@ from rest_framework.permissions import (
 
 from django.db.models import QuerySet
 
-from .models import Card, Terminal, Transaction
+from .models import (
+    Card, 
+    Terminal, 
+    CardToCardTransaction, 
+    CardToTerminalTransaction,
+)
 from .serializers import (
     CardSerializer, 
     SearchSerializer, 
     TerminalSerializer,
-    TransactionSerializer
+    CardToCardSerializer,
+    CardToTerminalSerializer,
 )
 
-from typing import Type
+from typing import Type, Optional
 
 
 class CardView(ViewSet):
@@ -101,27 +107,62 @@ class TerminalView(ViewSet):
         })
     
 
-class TransactionView(ViewSet):
-    """View for Transaction."""
+class CardToCardView(ViewSet):
+    """View for transaction card to card."""
 
-    queryset = Transaction.objects.all()
+    queryset: QuerySet = CardToCardTransaction.objects.all()
 
-    def list(self, request: Request) -> Response:
-        terminals = self.queryset.all()
-        serializer: TransactionSerializer =\
-            TransactionSerializer(terminals, many=True)
-        return Response(serializer.data)
-    
-    @action(methods=["POST"], url_path='add', detail=False)
-    def add_transaction(self, request: Request) -> Response:
-        serializer: TransactionSerializer = \
-            TransactionSerializer(data=request.data)
+    def create(self, request: Request) -> Response:
+        serializer: CardToCardSerializer = \
+            CardToCardSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({
-                'transaction' : 'added success'
+                'transaction' : 'success'
             })
         return Response({
             'error' : serializer.errors
         })
     
+
+class CardToTerminalView(ViewSet):
+    """View for transaction card to terminal."""
+
+    queryset: QuerySet = CardToTerminalTransaction.objects.all()
+
+    def create(self, request: Request) -> Response:
+        serializer: CardToTerminalSerializer = \
+            CardToTerminalSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                'transaction' : 'success'
+            })
+        return Response({
+            'error' : serializer.errors
+        })
+    
+
+class TransactionView(ViewSet):
+    """View for user's money."""
+
+    queryset: QuerySet = CardToCardTransaction.objects.all()
+    another_query: QuerySet = CardToTerminalTransaction.objects.all()
+
+    def retrieve(self, request: Request, pk: str) -> Response:
+        cash = self.queryset.filter(
+                to_card_id=pk,
+            )
+        another_money = self.another_query.filter(
+            terminal_id=pk,
+        )
+        sum = 0
+        i: int
+        for i in range(len(cash)):
+            sum += cash[i].money
+        j: int
+        for j in range(len(another_money)):
+            sum += another_money[j].money
+        return Response({
+            'money': sum,
+        })

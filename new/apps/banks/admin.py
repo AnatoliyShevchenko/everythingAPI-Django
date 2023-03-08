@@ -1,7 +1,11 @@
 from django.contrib import admin
-from django.core.handlers.wsgi import WSGIRequest
 
-from .models import Card, Terminal, Transaction
+from .models import (
+    Card, 
+    Terminal, 
+    CardToCardTransaction, 
+    CardToTerminalTransaction,
+)
 
 # Register your models here.
 class CardAdmin(admin.ModelAdmin):
@@ -26,13 +30,24 @@ class TerminalAdmin(admin.ModelAdmin):
     )
 
 
-class TransactionAdmin(admin.ModelAdmin):
-    """Transaction admin."""
+class CardToCardAdmin(admin.ModelAdmin):
+    """Card to card trasaction admin."""
 
-    model = Transaction
+    model = CardToCardTransaction
     list_display = (
         'out_card',
         'to_card',
+        'money',
+        'date_created'
+    )
+
+
+class CardToTerminalAdmin(admin.ModelAdmin):
+    """Card to terminal transaction."""
+
+    model = CardToTerminalTransaction
+    list_display = (
+        'out_card', 
         'terminal',
         'money',
         'date_created'
@@ -41,4 +56,5 @@ class TransactionAdmin(admin.ModelAdmin):
 
 admin.site.register(Card, CardAdmin)
 admin.site.register(Terminal, TerminalAdmin)
-admin.site.register(Transaction, TransactionAdmin)
+admin.site.register(CardToCardTransaction, CardToCardAdmin)
+admin.site.register(CardToTerminalTransaction, CardToTerminalAdmin)

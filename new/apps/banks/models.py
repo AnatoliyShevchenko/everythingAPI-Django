@@ -34,7 +34,7 @@ class Card(models.Model):
     )
     user = models.ForeignKey(
         to=User,
-        to_field=id,
+        to_field='id',
         on_delete=models.CASCADE
     )
 
@@ -44,7 +44,7 @@ class Card(models.Model):
         verbose_name_plural = 'карты'
 
     def __str__(self) -> str:
-        return f'{self.id}'
+        return f'{self.user}'
 
 
 class Terminal(models.Model):
@@ -52,7 +52,7 @@ class Terminal(models.Model):
 
     user = models.OneToOneField(
         to=User,
-        to_field=id,
+        to_field='id',
         on_delete=models.CASCADE,
         unique=True
     )
@@ -68,27 +68,20 @@ class Terminal(models.Model):
         verbose_name_plural = 'терминалы'
 
     def __str__(self) -> str:
-        return f'{self.id}'
+        return f'{self.user}'
 
 
-class Transaction(models.Model):
-    """Transaction for money."""
+class CardToCardTransaction(models.Model):
+    """Model for card to card transaction."""
 
     out_card = models.ForeignKey(
         to=Card,
-        to_field=id,
         on_delete=models.CASCADE,
         related_name='откуда'
     )
     to_card = models.ForeignKey(
         to=Card,
-        to_field=id,
-        on_delete=models.CASCADE,
-    )
-    terminal = models.ForeignKey(
-        to=Terminal,
-        to_field=id,
-        on_delete=models.CASCADE,
+        on_delete=models.CASCADE
     )
     money = models.DecimalField(
         verbose_name='сумма перевода',
@@ -102,18 +95,39 @@ class Transaction(models.Model):
 
     class Meta:
         ordering = ('-id',)
-        verbose_name = 'транзакция'
-        verbose_name_plural = 'транзакции'
+        verbose_name = 'с карты на карту'
+        verbose_name_plural = 'с карты на карту'
 
-    def save(self, *args, **kwargs) -> None:
-        self.full_clean()
-        return super().save(*args, **kwargs)
+    def __str__(self) -> str:
+        return str(self.id)
+    
 
-    def clean(self) -> None:
-        if self.money <= 0:
-            raise ValidationError('Money must be more than zero.')
-        elif self.to_card.DoesNotExist and self.terminal.DoesNotExist:
-            raise ValidationError('Choose one of them.')
-        elif self.to_card and self.terminal:
-            raise ValidationError('Choose the only one.')
-        return super().clean()
+class CardToTerminalTransaction(models.Model):
+    """Model for card to card transaction."""
+
+    out_card = models.ForeignKey(
+        to=Card,
+        on_delete=models.CASCADE,
+        related_name='отсюда'
+    )
+    terminal = models.ForeignKey(
+        to=Terminal,
+        on_delete=models.CASCADE
+    )
+    money = models.DecimalField(
+        verbose_name='сумма перевода',
+        max_digits=10,
+        decimal_places=2
+    )
+    date_created = models.DateTimeField(
+        auto_now=True,
+        verbose_name='дата платежа'
+    )
+
+    class Meta:
+        ordering = ('-id',)
+        verbose_name = 'с карты на терминал'
+        verbose_name_plural = 'с карты на терминал'
+
+    def __str__(self) -> str:
+        return str(self.id)

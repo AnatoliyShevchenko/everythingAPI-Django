@@ -17,7 +17,13 @@ from auths.views import (
     LoginView, 
     LogoutView, 
 )
-from banks.views import CardView, TerminalView, TransactionView
+from banks.views import (
+    CardView, 
+    TerminalView, 
+    CardToCardView, 
+    CardToTerminalView,
+    TransactionView,
+)
 from asyncs.views import AsyncViewSet
 
 
@@ -52,8 +58,10 @@ router.register('reg_user', UserRegView)
 router.register('login', LoginView)
 router.register('logout', LogoutView)
 router.register('terminals', TerminalView)
-router.register('transaction', TransactionView)
 router.register('async', AsyncViewSet)
+router.register('card-to-card', CardToCardView)
+router.register('card-to-terminal', CardToTerminalView)
+router.register('transactions', TransactionView)
 
 if settings.DEBUG:
     urlpatterns += [

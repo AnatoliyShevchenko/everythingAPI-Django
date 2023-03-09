@@ -12,6 +12,7 @@ from django.db.models import QuerySet
 
 from .tasks import check_region
 from banks.models import Card
+from .models import Station
 
 import asyncio
 

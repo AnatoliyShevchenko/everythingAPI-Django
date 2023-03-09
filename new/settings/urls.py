@@ -24,7 +24,7 @@ from banks.views import (
     CardToTerminalView,
     TransactionView,
 )
-from asyncs.views import AsyncViewSet
+from asyncs.views import AsyncViewSet, RadioView
 
 
 urlpatterns = [
@@ -62,6 +62,7 @@ router.register('async', AsyncViewSet)
 router.register('card-to-card', CardToCardView)
 router.register('card-to-terminal', CardToTerminalView)
 router.register('transactions', TransactionView)
+router.register('radio', RadioView)
 
 if settings.DEBUG:
     urlpatterns += [

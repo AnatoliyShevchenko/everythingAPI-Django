@@ -69,8 +69,3 @@ class CardToTerminalSerializer(serializers.ModelSerializer):
         model = CardToTerminalTransaction
         fields = ('out_card', 'terminal', 'money',)
 
-
-class MoneySerializer(serializers.Serializer):
-    """serializer for user's money."""
-
-    to_card_id = serializers.IntegerField()

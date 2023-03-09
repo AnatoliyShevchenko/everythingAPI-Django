@@ -15,3 +15,4 @@ async def check_region(home: str, day: int = 13) -> bool:
             return True
         
     return False
+

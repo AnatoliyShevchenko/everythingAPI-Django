@@ -16,7 +16,6 @@ from asyncs.models import Station
 dtype: TypeAlias = list[dict[str, Union[str, int]]]
 
 
-
 class Command(BaseCommand):
     """Class to create data."""
     

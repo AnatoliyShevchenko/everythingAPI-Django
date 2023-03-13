@@ -62,6 +62,10 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """User."""
 
+    count_requests = models.PositiveSmallIntegerField(
+        verbose_name='count of requests',
+        default=10
+    )
     email = models.EmailField(
         max_length=100,
         unique=True,
